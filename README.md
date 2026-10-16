@@ -1,0 +1,2 @@
+# caca-estrangeirismos
+joguin full
