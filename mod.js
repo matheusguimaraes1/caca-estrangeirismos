@@ -11,7 +11,7 @@
     BONUS_COMBO: 5,         // extra por acerto enquanto o combo está ativo
     BONUS_PERFEITO: 30,     // achou todas sem errar nenhuma
     BONUS_POR_SEGUNDO: 1,   // por segundo que sobrou (só se achar todas)
-    TEMPO_POR_TEXTO: 120,   // segundos
+    TEMPO_POR_TEXTO: 60,   // segundos
     EMBARALHAR_TEXTOS: true,
     TAMANHO_RANKING: 10,
     CHAVE_RANKING: 'cacaEstrangeirismos.ranking.v1',
