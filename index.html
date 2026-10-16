@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caça-Estrangeirismos</title>
+  <meta name="description" content="Jogo: encontre as palavras estrangeiras escondidas em textos em português.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sys.css">
+</head>
+<body>
+  <div id="fundo" aria-hidden="true"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <button id="btn-som" class="icon-btn" type="button" aria-label="Ligar/desligar som" title="Som">🔊</button>
+
+  <main id="app">
+
+    <!-- INÍCIO -->
+    <section id="tela-inicio" class="tela ativa">
+      <div class="card hero">
+        <div class="logo" aria-hidden="true">🔍</div>
+        <h1>Caça-<span>Estrangeirismos</span></h1>
+        <p class="sub">Encontre as palavras estrangeiras escondidas nos textos em português. Mas cuidado: clicar errado custa pontos!</p>
+        <form id="form-nome" novalidate>
+          <label for="nome">Qual é o seu nome?</label>
+          <input id="nome" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Digite seu nome...">
+          <button class="btn btn-primario btn-grande" type="submit">Começar ▶</button>
+        </form>
+        <div class="links">
+          <button class="btn btn-sec" type="button" data-ir="regras">📜 Regras</button>
+          <button class="btn btn-sec" type="button" data-ir="ranking">🏆 Ranking</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGRAS -->
+    <section id="tela-regras" class="tela">
+      <div class="card">
+        <h2 class="titulo-card">📜 Como jogar</h2>
+        <ul id="lista-regras" class="regras"></ul>
+        <button class="btn btn-primario" type="button" data-ir="inicio">Entendi! ◀ Voltar</button>
+      </div>
+    </section>
+
+    <!-- JOGO -->
+    <section id="tela-jogo" class="tela">
+      <header class="hud">
+        <div class="hud-topo">
+          <div class="hud-jogador">
+            <strong id="hud-nome"></strong>
+            <small id="hud-texto"></small>
+          </div>
+          <button id="btn-sair" class="btn btn-mini" type="button">✕ Sair</button>
+        </div>
+        <div class="hud-stats">
+          <div class="stat"><small>Pontos</small><strong id="hud-pontos">0</strong></div>
+          <div class="stat"><small>Achadas</small><strong id="hud-achadas">0/0</strong></div>
+          <div class="stat" id="stat-tempo"><small>Tempo</small><strong id="hud-tempo">0:00</strong></div>
+        </div>
+        <div class="barra-tempo"><div id="barra-tempo"></div></div>
+      </header>
+
+      <article class="card texto-card">
+        <div id="combo" class="combo" hidden></div>
+        <h2 id="texto-titulo" class="texto-titulo"></h2>
+        <p id="texto-corpo" class="texto"></p>
+      </article>
+
+      <div class="acoes">
+        <button id="btn-terminar" class="btn btn-sec" type="button">Terminei este texto ⏭</button>
+      </div>
+    </section>
+
+    <!-- FINAL -->
+    <section id="tela-final" class="tela">
+      <div class="card final">
+        <div class="trofeu" aria-hidden="true">🏁</div>
+        <h2 id="final-titulo" class="titulo-card"></h2>
+        <div class="placar-final"><span id="final-pontos">0</span><small>pontos</small></div>
+        <div id="final-stats" class="grade-stats"></div>
+        <p id="final-msg" class="final-msg"></p>
+        <div class="links">
+          <button class="btn btn-primario" type="button" data-ir="ranking">🏆 Ver ranking</button>
+          <button class="btn btn-sec" type="button" id="btn-proximo-jogador">👤 Próximo jogador</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RANKING -->
+    <section id="tela-ranking" class="tela">
+      <div class="card">
+        <h2 class="titulo-card">🏆 Top 10</h2>
+        <ol id="lista-ranking" class="ranking"></ol>
+        <div class="links">
+          <button class="btn btn-primario" type="button" data-ir="inicio">◀ Início</button>
+        </div>
+        <button id="btn-zerar" class="link-discreto" type="button">Zerar ranking</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- CONTAGEM REGRESSIVA -->
+  <div id="contagem" class="overlay" hidden>
+    <div class="contagem-box">
+      <small id="contagem-sub"></small>
+      <h2 id="contagem-titulo"></h2>
+      <div id="contagem-num" class="contagem-num"></div>
+    </div>
+  </div>
+
+  <!-- RESULTADO DE CADA TEXTO -->
+  <div id="modal-resultado" class="overlay" hidden>
+    <div class="card modal-card" role="dialog" aria-modal="true" aria-labelledby="res-titulo">
+      <h2 id="res-titulo" class="titulo-card"></h2>
+      <div id="res-linhas" class="linhas"></div>
+      <h3 class="sub-titulo">📖 O que significam</h3>
+      <ul id="res-glossario" class="glossario"></ul>
+      <button id="btn-continuar" class="btn btn-primario btn-grande" type="button"></button>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <script src="textos.js"></script>
+  <script src="mod.js"></script>
+</body>
+</html>
